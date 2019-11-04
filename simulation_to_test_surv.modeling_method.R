@@ -18,13 +18,13 @@ source('./Functions_to_analyze_cancer_trends_by_cohort.R') # load the functions 
 surv.model='fn_surv.reg.acc' # use the acceleration model
 fn_surv.reg=get(surv.model) # get the model
 
-cohort.width=5; # cohort width: 5 year
+cohort.interval=5; # cohort interval: 5 year
 age.min=25; age.max=49 # set the age range
-cohorts=seq(1945,1965,by=cohort.width) # set cohorts, those born from 1945 to 1969
+cohorts=seq(1945,1965,by=cohort.interval) # set cohorts, those born from 1945 to 1969
 ages=0:age.max
 
 # changes for the cohort effect
-ch.incr.rate=.1/5*cohort.width # per cohort % increase [10% for 5-yr]
+ch.incr.rate=.1/5*cohort.interval # per cohort % increase [10% for 5-yr]
 
 # Simulaiton of Folic Acid Fortification and Colorectal Cancer Risk
 # changes for the first period effect (based on folate intake)
@@ -73,7 +73,7 @@ for(ic in 1:length(cohorts)){
   IR[,ic]=ir * dr0; # assume 50% detection rate, for comparison with Scenario 3 and 5
 }
 
-colnames(IR)=apply(cbind(cohorts,cohorts+cohort.width-1),1,paste0,collapse='-')
+colnames(IR)=apply(cbind(cohorts,cohorts+cohort.interval-1),1,paste0,collapse='-')
 dat=cbind(Age=ages,IR) %>% data.table()
 dat=dat[Age<=age.max & Age>=age.min]
 # save it
@@ -89,7 +89,7 @@ matplot(IR,type='l',lty=1,col=cols,xlim=c(age.min,age.max))
 IR=matrix(0,length(ages),length(cohorts))
 for(ic in 1:length(cohorts)){
   cohort=cohorts[ic]
-  cohort.mid=cohort+cohort.width/2 # mid.year of the cohhort
+  cohort.mid=cohort+cohort.interval/2 # mid.year of the cohhort
   
   a=pmax(ages,a0)
   H=h0 * (a-a0) + 1/2 * delta0 * (a-a0)^2 # cumulative harzard for each age
@@ -109,7 +109,7 @@ for(ic in 1:length(cohorts)){
   
   IR[,ic]=ir
 }
-colnames(IR)=apply(cbind(cohorts,cohorts+cohort.width-1),1,paste0,collapse='-')
+colnames(IR)=apply(cbind(cohorts,cohorts+cohort.interval-1),1,paste0,collapse='-')
 dat=cbind(Age=ages,IR) %>% data.table()
 dat=dat[Age<=age.max & Age>=age.min]
 # save it
@@ -124,7 +124,7 @@ matplot(IR,type='l',lty=1,col=cols,xlim=c(age.min,age.max))
 IR=matrix(0,length(ages),length(cohorts))
 for(ic in 1:length(cohorts)){
   cohort=cohorts[ic]
-  cohort.mid=cohort+cohort.width/2 # mid.year of the cohhort
+  cohort.mid=cohort+cohort.interval/2 # mid.year of the cohhort
   
   a=pmax(ages,a0)
   H=h0 * (a-a0) + 1/2 * delta0 * (a-a0)^2
@@ -143,7 +143,7 @@ for(ic in 1:length(cohorts)){
   ir = ir.a * p.effs
   IR[,ic]=ir
 }
-colnames(IR)=apply(cbind(cohorts,cohorts+cohort.width-1),1,paste0,collapse='-')
+colnames(IR)=apply(cbind(cohorts,cohorts+cohort.interval-1),1,paste0,collapse='-')
 dat=cbind(Age=ages,IR) %>% data.table()
 dat=dat[Age<=age.max & Age>=age.min]
 
@@ -162,7 +162,7 @@ deltas=delta0*seq(1,length.out = length(cohorts),by=ch.incr.rate) # hazard incre
 IR=matrix(0,length(ages),length(cohorts))
 for(ic in 1:length(cohorts)){
   cohort=cohorts[ic]
-  cohort.mid=cohort+cohort.width/2 # mid.year of the cohhort
+  cohort.mid=cohort+cohort.interval/2 # mid.year of the cohhort
   
   a=pmax(ages,a0)
   H=h0s[ic] * (a-a0) + 1/2 * deltas[ic] * (a-a0)^2
@@ -182,7 +182,7 @@ for(ic in 1:length(cohorts)){
   
   IR[,ic]=ir
 }
-colnames(IR)=apply(cbind(cohorts,cohorts+cohort.width-1),1,paste0,collapse='-')
+colnames(IR)=apply(cbind(cohorts,cohorts+cohort.interval-1),1,paste0,collapse='-')
 dat=cbind(Age=ages,IR) %>% data.table()
 dat=dat[Age<=age.max & Age>=age.min]
 # save it
@@ -199,7 +199,7 @@ deltas=delta0*seq(1,length.out = length(cohorts),by=ch.incr.rate) # hazard incre
 IR=matrix(0,length(ages),length(cohorts))
 for(ic in 1:length(cohorts)){
   cohort=cohorts[ic]
-  cohort.mid=cohort+cohort.width/2 # mid.year of the cohhort
+  cohort.mid=cohort+cohort.interval/2 # mid.year of the cohhort
   
   a=pmax(ages,a0)
   H=h0s[ic] * (a-a0) + 1/2 * deltas[ic] * (a-a0)^2  # cumulative hazard for that cohort
@@ -219,7 +219,7 @@ for(ic in 1:length(cohorts)){
   
   IR[,ic]=ir
 }
-colnames(IR)=apply(cbind(cohorts,cohorts+cohort.width-1),1,paste0,collapse='-')
+colnames(IR)=apply(cbind(cohorts,cohorts+cohort.interval-1),1,paste0,collapse='-')
 dat=cbind(Age=ages,IR) %>% data.table()
 dat=dat[Age<=age.max & Age>=age.min]
 # save it
@@ -236,7 +236,7 @@ scenarios=c('Cohort effect alone',"Period effect (exposure)",'Period effect (det
 num.pred=2; cols=c('blue','red'); pchs=c('x','+')
 n.row=5;n.col=2
 
-pdf(paste0('./Fig_sim_fit.trend_by.',surv.model,'_a',age.min,'-',age.max,'.pdf'),width=7,height = 1.6*n.row)
+pdf(paste0('./Fig_sim_fit.trend_by.',surv.model,'_a',age.min,'-',age.max,'.pdf'),width =7,height = 1.6*n.row)
 par(mfrow=c(n.row,n.col),mar=c(0,2.2,0,.5),oma=c(2.5,.5,1.5,.5),cex=.8,cex.lab=.9,cex.axis=.8,mgp=c(1,.2,0),tck=-.02)
 for(i in 1:5){
 

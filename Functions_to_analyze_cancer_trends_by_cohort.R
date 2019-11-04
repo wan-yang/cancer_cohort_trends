@@ -1,3 +1,6 @@
+# This model code is used for analyses in manuscript Yang W, Kehm RD, and Terry MB 2019 (Survival model methods for analyses of cancer incidence trends in young adults)
+# CAUTION: for use in other research, please read the code carefully and modify it to suit your own need.
+
 # Functions for cohort specific survival analysis
 # including 1) different survivial models
 # 2) analyzing cohort trend using regression
@@ -280,7 +283,7 @@ fn_fit.trend=function(dat,surv.model="fn_surv.reg.acc",N=1e5,fig.title1='Surviva
 # FUNCTION FOR GENERATING PREDICTIONS
 ##########################################################################################
 # prediction using the 'acceleration' model
-fn_get.pred.acc=function(res.surv,surv.model='fn_surv.reg.acc', N=1e5,age.min=25,age.max=49,num.pred=2,cohort.width=5){
+fn_get.pred.acc=function(res.surv,surv.model='fn_surv.reg.acc', N=1e5,age.min=25,age.max=49,num.pred=2,cohort.interval=5){
   # input: res.surv=output from the survival model
   
   age0=res.surv$age0[1];
@@ -288,7 +291,7 @@ fn_get.pred.acc=function(res.surv,surv.model='fn_surv.reg.acc', N=1e5,age.min=25
   pred.start=tail(res.surv$cohort.end,1)+1;
   
   pred.cohorts=NULL  # get the cohorts for which predictions are made
-  for(i in 1:num.pred) pred.cohorts=c(pred.cohorts,paste0(cohort.width*(i-1)+pred.start,'-',pred.start+cohort.width*i-1));
+  for(i in 1:num.pred) pred.cohorts=c(pred.cohorts,paste0(cohort.interval*(i-1)+pred.start,'-',pred.start+cohort.interval*i-1));
   
   if(res.surv$cohort.start[1]==res.surv$cohort.start[nrow(res.surv)]) res.surv=res.surv[-nrow(res.surv),] # if the last row is the mean across cohorts, delete it
   
