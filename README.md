@@ -1,5 +1,5 @@
 # cancer_cohort_trends
-R code for Yang et al. 2019 "Survival model methods for analyses of cancer incidence trends in young adults"
+R code for Yang W, Kehm RD, Terry MB. Survival model methods for analyses of cancer incidence trends in young adults. Statistics in Medicine. 2020;1–14. https://doi.org/10.1002/sim.8458
 
 This model code is used for analyses in manuscript Yang W, Kehm RD, and Terry MB 2019 (Survival model methods for analyses of cancer incidence trends in young adults)
 CAUTION: for use in other research, please read the code carefully and modify it to suit your own need.
